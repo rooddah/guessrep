@@ -23,7 +23,7 @@ public class RegistrationTests {
 
     protected static WebDriver driver;
     private String URL = "http://automationpractice.com";
-    private String email = "john.smith@domain.comas";
+    private String email = "john.doe@domain.coma";
     private String email2 = "jane.doe@webpage.com";
     private String password = "pass123";
     private String firstname = "John";
