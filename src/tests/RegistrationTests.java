@@ -23,7 +23,7 @@ public class RegistrationTests {
 
     protected static WebDriver driver;
     private String URL = "http://automationpractice.com";
-    private String email = "john.doe@domain.coma";
+    private String email = "john.doe@nicedomain.com";
     private String email2 = "jane.doe@webpage.com";
     private String password = "pass123";
     private String firstname = "John";
@@ -33,10 +33,10 @@ public class RegistrationTests {
     private String city = "Wonderville";
     private String zip = "54321";
     private String mobile = "1928-3746-55";
-    private String createAccountPageTitle = "Authentication";
-    private String myAccountTitle = "My Account";
-    private String errEmailExists = "has already been registered";
-    private String errEmailInvalidString = "Invalid email address";
+    private final String createAccountPageTitle = "Authentication";
+    private final String myAccountTitle = "My Account";
+    private final String errEmailExists = "has already been registered";
+    private final String errEmailInvalidString = "Invalid email address";
     private String justAString = "helloDarknessMyOldFriend";
 
     private int dayOfBirth = 1;
@@ -56,7 +56,7 @@ public class RegistrationTests {
         driver.manage().window().maximize();
         System.out.println("Clicking 'Sign In' button...");
         mainPage.clickSignIn();
-        driver.manage().timeouts().implicitlyWait(2, TimeUnit.SECONDS);
+        driver.manage().timeouts().implicitlyWait(3, TimeUnit.SECONDS);
         Assert.assertTrue(signPage.getpageTitle().equalsIgnoreCase("Authentication"));
     }
 
@@ -78,20 +78,12 @@ public class RegistrationTests {
         CreateAccountPage createAccount = new CreateAccountPage(driver);
         Assert.assertTrue(createAccount.getPageTitle().equalsIgnoreCase(createAccountPageTitle));
         Assert.assertTrue(createAccount.isEmailPopulated());
-        createAccount.selectRadioTitle(Titles.MR);
-        createAccount.setFirstName(firstname);
-        createAccount.setLastName(lastname);
+        createAccount.setUser(Titles.MR, firstname, lastname);
         createAccount.setPassword(password);
-        createAccount.selectDayOfBirth(dayOfBirth);
-        createAccount.selectMonthOfBirth(Months.DECEMBER);
-        createAccount.selectYearOfBirth(yearOfBirth);
+        createAccount.secectBirthdayDate(dayOfBirth, Months.DECEMBER, yearOfBirth);
         createAccount.setFirstNameAddr(firstname);
         createAccount.setLastnameAddr(lastname);
-        createAccount.setAddress1(address);
-        createAccount.setCity(city);
-        createAccount.selectCountry(Countries.UNITED_STATES);
-        createAccount.selectState(States.CALIFORNIA);
-        createAccount.setZipCode(zip);
+        createAccount.setAddress(address, city, Countries.UNITED_STATES, States.CALIFORNIA, zip);
         createAccount.setMobilePhone(mobile);
         createAccount.register();
         Assert.assertTrue(myAccount.getPageTitle().equalsIgnoreCase(myAccountTitle));

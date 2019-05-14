@@ -134,6 +134,12 @@ public class CreateAccountPage extends BasePage {
         driver.findElement(lastName).sendKeys(pLastname);
     }
 
+    public void setUser(Titles pTitle, String Firstname, String pLastname) throws Exception {
+        selectRadioTitle(pTitle);
+        setFirstName(Firstname);
+        setLastName(pLastname);
+    }
+
     public void setEmail(String pEmail) throws Exception {
         driver.findElement(email).clear();
         driver.findElement(email).sendKeys(pEmail);
@@ -181,6 +187,12 @@ public class CreateAccountPage extends BasePage {
         }
     }
 
+    public void secectBirthdayDate(int pDay, Months pMonth, int pYear) throws Exception {
+        selectDayOfBirth(pDay);
+        selectMonthOfBirth(pMonth);
+        selectYearOfBirth(pYear);
+    }
+
     public void selectCheckboxNewsletter() throws Exception {
         checkboxNewsletter().click();
     }
@@ -221,6 +233,14 @@ public class CreateAccountPage extends BasePage {
 
     public void setZipCode(String pZip) throws Exception {
         inputZipCode().sendKeys(pZip);
+    }
+
+    public void setAddress(String pAddress, String pCity, Countries pCountry, States pState, String pZip) throws Exception {
+        setAddress1(pAddress);
+        setCity(pCity);
+        selectCountry(pCountry);
+        selectState(pState);
+        setZipCode(pZip);
     }
 
     public void setAdditionalInfo(String pText) throws Exception {
