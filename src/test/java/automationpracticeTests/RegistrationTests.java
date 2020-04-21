@@ -1,29 +1,32 @@
-package tests;
+package automationpracticeTests;
 
+import automationpractice.CreateAccountPage;
+import automationpractice.MyAccount;
+import automationpractice.SignInPage;
+import automationpractice.StoreMainPage;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
-import pages.BasePage.Countries;
-import pages.BasePage.Months;
-import pages.BasePage.States;
-import pages.BasePage.Titles;
-import pages.CreateAccountPage;
-import pages.MyAccount;
-import pages.SignInPage;
-import pages.StoreMainPage;
 
+import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
-import static org.testng.Assert.assertTrue;
+import static automationpractice.BasePage.Countries.UNITED_STATES;
+import static automationpractice.BasePage.Months.DECEMBER;
+import static automationpractice.BasePage.States.CALIFORNIA;
+import static automationpractice.BasePage.Titles.MR;
 
-public class RegistrationTests {
+public class RegistrationTests extends BaseTests {
 
     protected static WebDriver driver;
     private String URL = "http://automationpractice.com";
-    private String email = "john.doe@nicedomain.com";
+    Random rand = new Random();
+    int randomStr =  rand.nextInt(900) + 100;
+    private String email = "john.doe"+randomStr+"@nicedomain.com";
+    private String alreadyRegisteredEmail = "john.doe@nicedomain.com";
     private String email2 = "jane.doe@webpage.com";
     private String password = "pass123";
     private String firstname = "John";
@@ -45,24 +48,26 @@ public class RegistrationTests {
     StoreMainPage mainPage;
     SignInPage signPage;
     MyAccount myAccount;
+    CreateAccountPage createAccount;
 
-    @BeforeMethod()
+    @BeforeMethod
     public void beforeTest() {
-        driver = new FirefoxDriver();
+		driver = new FirefoxDriver();
         mainPage = new StoreMainPage(driver);
         signPage = new SignInPage(driver);
+        createAccount = new CreateAccountPage(driver);
         myAccount = new MyAccount(driver);
         driver.get(URL);
         driver.manage().window().maximize();
         System.out.println("Clicking 'Sign In' button...");
         mainPage.clickSignIn();
         driver.manage().timeouts().implicitlyWait(3, TimeUnit.SECONDS);
-        Assert.assertTrue(signPage.getpageTitle().equalsIgnoreCase("Authentication"));
+        Assert.assertTrue(signPage.getPageTitle().equalsIgnoreCase("Authentication"));
     }
 
-    @AfterMethod()
+    @AfterMethod
     public void afterTest() throws Exception {
-        if (!myAccount.isSignedOut()) {
+        if (myAccount.isSignedIn()) {
             myAccount.signOut();
         }
         driver.quit();
@@ -70,20 +75,18 @@ public class RegistrationTests {
 
     @Test(priority = 1)
     public  void registerUser() throws Exception {
-
         System.out.println("Entering email and clicking 'Create' button");
         signPage.setEmail(email);
         signPage.clickCreate();
         driver.manage().timeouts().implicitlyWait(4, TimeUnit.SECONDS);
-        CreateAccountPage createAccount = new CreateAccountPage(driver);
         Assert.assertTrue(createAccount.getPageTitle().equalsIgnoreCase(createAccountPageTitle));
         Assert.assertTrue(createAccount.isEmailPopulated());
-        createAccount.setUser(Titles.MR, firstname, lastname);
+        createAccount.setUser(MR, firstname, lastname);
         createAccount.setPassword(password);
-        createAccount.secectBirthdayDate(dayOfBirth, Months.DECEMBER, yearOfBirth);
+        createAccount.secectBirthdayDate(dayOfBirth, DECEMBER, yearOfBirth);
         createAccount.setFirstNameAddr(firstname);
         createAccount.setLastnameAddr(lastname);
-        createAccount.setAddress(address, city, Countries.UNITED_STATES, States.CALIFORNIA, zip);
+        createAccount.setAddress(address, city, UNITED_STATES, CALIFORNIA, zip);
         createAccount.setMobilePhone(mobile);
         createAccount.register();
         Assert.assertTrue(myAccount.getPageTitle().equalsIgnoreCase(myAccountTitle));
@@ -92,14 +95,14 @@ public class RegistrationTests {
     @Test(priority = 2)
     public void logIn() throws Exception {
         System.out.println("Entering email and password and clicking sign In button");
-        signPage.logIn(email, password);
+        signPage.logIn(alreadyRegisteredEmail, password);
         Assert.assertTrue(myAccount.getPageTitle().equalsIgnoreCase(myAccountTitle));
         Assert.assertTrue(myAccount.getUsername().equalsIgnoreCase(username), "[Bug 12345] Username is " + myAccount.getUsername() + " instead of " + username); //because username should be name+lastname and here it is name+ 2x lastname
     }
 
     @Test(priority = 3)
     public void negativeScenario() throws Exception {
-        signPage.setEmail(email);
+        signPage.setEmail(alreadyRegisteredEmail);
         signPage.clickCreate();
         Thread.sleep(3000);
         Assert.assertTrue(signPage.errorMessageContent().contains(errEmailExists));
@@ -112,7 +115,6 @@ public class RegistrationTests {
         signPage.setEmail(email2);
         signPage.clickCreate();
         Thread.sleep(3000);
-        CreateAccountPage createAccount = new CreateAccountPage(driver);
         createAccount.register();
         createAccount.assertErrors();
     }

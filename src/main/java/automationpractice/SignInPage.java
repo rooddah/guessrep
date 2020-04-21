@@ -1,13 +1,15 @@
-package pages;
+package automationpractice;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
-public class SignInPage {
+public class SignInPage extends BasePage {
 
-    private WebDriver driver;
-
+    public SignInPage(WebDriver driver ) {
+        super(driver);
+    }
+    
     By pageTitle = By.xpath("//h1[@class='page-heading']");
 
     // 'Create an Account' section for new user
@@ -38,14 +40,6 @@ public class SignInPage {
 
     private WebElement error() {
         return driver.findElement(By.id("create_account_error"));
-    }
-
-    public SignInPage(WebDriver driver ) {
-        this.driver = driver;
-    }
-
-    public String getpageTitle() {
-        return driver.findElement(pageTitle).getText();
     }
 
     public void clickCreate() {

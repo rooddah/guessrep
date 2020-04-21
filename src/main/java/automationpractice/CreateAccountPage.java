@@ -1,31 +1,26 @@
-package pages;
-
-import java.util.ArrayList;
-import java.util.List;
-
+package automationpractice;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
 import org.testng.Assert;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class CreateAccountPage extends BasePage {
-
     int index = 0;
 
-    WebDriver driver;
-
     public CreateAccountPage(WebDriver driver) {
-        this.driver = driver;
+        super(driver);
     }
 
     @Override
     public String getPageTitle() {
-        return driver.findElement(pageSubtitle).getText().trim();
+        return driver.findElement(By.className("page-heading")).getText();
     }
 
-    By pageSubtitle = By.className("navigation_page");
     By firstName = By.name("customer_firstname");
     By lastName = By.name("customer_lastname");
     By email = By.name("email");
@@ -36,24 +31,20 @@ public class CreateAccountPage extends BasePage {
     private WebElement dropdownDays() {
         return driver.findElement(By.name("days"));
     }
-
     private WebElement dropdownMonths() {
         return driver.findElement(By.name("months"));
     }
-
     private WebElement dropdownYears() {
         return driver.findElement(By.name("years"));
     }
-
     private WebElement dropdownState() {
         return driver.findElement(By.id("id_state"));
     }
-
     private WebElement dropdownCountry() {
         return driver.findElement(By.id("id_country"));
     }
 
-    private WebElement radioTitle (Titles pTitle) {
+    private WebElement radioTitle(Titles pTitle) {
         if (pTitle.toString().equalsIgnoreCase("mrs.")) {
             index = 2;
         } else if (pTitle.toString().equalsIgnoreCase("mr.")) {
@@ -67,52 +58,41 @@ public class CreateAccountPage extends BasePage {
     private WebElement checkboxNewsletter() {
         return driver.findElement(By.name("newsletter"));
     }
-
     private WebElement checkSpecialOffers() {
         return driver.findElement(By.name("optin"));
     }
-
     private WebElement inputCompany() {
         return driver.findElement(By.name("company"));
     }
-
     private WebElement inputAddress1() {
         return driver.findElement(By.name("address1"));
     }
-
     private WebElement inputAddress2() {
         return driver.findElement(By.name("address2"));
     }
-
     private WebElement inputCity() {
         return driver.findElement(By.name("city"));
     }
-
     private WebElement inputZipCode() {
         return driver.findElement(By.name("postcode"));
     }
-
     private WebElement inputAdditionalInfo() {
-        return driver.findElement(By.xpath("//p[@class='textarea form-group']////textarea[@class='form-control']"));
+        return driver.findElement(By.xpath("//p[@class='textarea form-group']//textarea[@class='form-control']"));
     }
-
     private WebElement inputHomePhone() {
         return driver.findElement(By.name("phone"));
     }
-
     private WebElement inputMobilePhone() {
         return driver.findElement(By.name("phone_mobile"));
     }
-
     private WebElement inputAssignAddress() {
         return driver.findElement(By.name("alias"));
     }
-
     private WebElement buttonRegister() {
         return driver.findElement(By.name("submitAccount"));
     }
 
-    public void selectRadioTitle(Titles pTitle) throws Exception {
+    public void selectRadioTitle(Titles pTitle) {
         radioTitle(pTitle).click();
     }
 
@@ -126,11 +106,11 @@ public class CreateAccountPage extends BasePage {
         return selected;
     }
 
-    public void setFirstName(String pFirstname) throws Exception {
+    public void setFirstName(String pFirstname) {
         driver.findElement(firstName).sendKeys(pFirstname);
     }
 
-    public void setLastName(String pLastname) throws Exception {
+    public void setLastName(String pLastname) {
         driver.findElement(lastName).sendKeys(pLastname);
     }
 
@@ -140,12 +120,12 @@ public class CreateAccountPage extends BasePage {
         setLastName(pLastname);
     }
 
-    public void setEmail(String pEmail) throws Exception {
+    public void setEmail(String pEmail) {
         driver.findElement(email).clear();
         driver.findElement(email).sendKeys(pEmail);
     }
 
-    public boolean isEmailPopulated() throws Exception {
+    public boolean isEmailPopulated() {
         boolean populated = false;
         String val = driver.findElement(email).getAttribute("value");
         if (val != null) {
@@ -156,13 +136,13 @@ public class CreateAccountPage extends BasePage {
         return populated;
     }
 
-    public void setPassword(String pPassword) throws Exception {
+    public void setPassword(String pPassword) {
         driver.findElement(password).sendKeys(pPassword);
     }
 
-    public void selectDayOfBirth(int pDay) throws Exception {
+    public void selectDayOfBirth(int pDay) {
         Select birthDay = new Select(dropdownDays());
-        String  dayString = String.valueOf(pDay);
+        String dayString = String.valueOf(pDay);
         if (dropdownDays() != null) {
             if (pDay >= 1 && pDay <= 31) {
                 birthDay.selectByValue(dayString);
@@ -172,14 +152,14 @@ public class CreateAccountPage extends BasePage {
         }
     }
 
-    public void selectMonthOfBirth(Months pMonth) throws Exception {
+    public void selectMonthOfBirth(Months pMonth) {
         Select birthMonth = new Select(dropdownMonths());
         if (dropdownMonths() != null) {
             birthMonth.selectByValue(pMonth.toString());
         }
     }
 
-    public void selectYearOfBirth(int pYear) throws Exception {
+    public void selectYearOfBirth(int pYear) {
         Select birthYear = new Select(dropdownYears());
         String yearString = String.valueOf(pYear);
         if (dropdownYears() != null) {
@@ -193,45 +173,45 @@ public class CreateAccountPage extends BasePage {
         selectYearOfBirth(pYear);
     }
 
-    public void selectCheckboxNewsletter() throws Exception {
+    public void selectCheckboxNewsletter() {
         checkboxNewsletter().click();
     }
 
-    public void selectCheckboxSpecialOffer() throws Exception {
+    public void selectCheckboxSpecialOffer() {
         checkSpecialOffers().click();
     }
 
-    public void setFirstNameAddr(String pFirstname) throws Exception {
+    public void setFirstNameAddr(String pFirstname) {
         driver.findElement(firstNameAddr).sendKeys(pFirstname);
     }
 
-    public void setLastnameAddr(String pLastname) throws Exception {
+    public void setLastnameAddr(String pLastname) {
         driver.findElement(lastNameAddr).sendKeys(pLastname);
     }
 
-    public void selectCountry(Countries pCountry) throws Exception {
+    public void selectCountry(Countries pCountry) {
         Select countries = new Select(dropdownCountry());
         countries.selectByVisibleText(pCountry.toString());
     }
 
-    public void setAddress1(String pAddress) throws Exception {
+    public void setAddress1(String pAddress) {
         inputAddress1().sendKeys(pAddress);
     }
 
-    public void setAddress2(String pAddress2) throws Exception {
+    public void setAddress2(String pAddress2) {
         inputAddress2().sendKeys(pAddress2);
     }
 
-    public void setCity(String pCity) throws Exception {
+    public void setCity(String pCity) {
         inputCity().sendKeys(pCity);
     }
 
-    public void selectState(States pState) throws Exception {
+    public void selectState(States pState) {
         Select states = new Select(dropdownState());
         states.selectByVisibleText(pState.toString());
     }
 
-    public void setZipCode(String pZip) throws Exception {
+    public void setZipCode(String pZip) {
         inputZipCode().sendKeys(pZip);
     }
 
@@ -243,23 +223,23 @@ public class CreateAccountPage extends BasePage {
         setZipCode(pZip);
     }
 
-    public void setAdditionalInfo(String pText) throws Exception {
+    public void setAdditionalInfo(String pText) {
         inputAdditionalInfo().sendKeys(pText);
     }
 
-    public void setHomePhone(String pNumber) throws Exception {
+    public void setHomePhone(String pNumber) {
         inputHomePhone().sendKeys(pNumber);
     }
 
-    public void setMobilePhone(String pNumber) throws Exception {
+    public void setMobilePhone(String pNumber) {
         inputMobilePhone().sendKeys(pNumber);
     }
 
-    public void setAlias(String pText) throws Exception {
+    public void setAlias(String pText) {
         inputAssignAddress().sendKeys(pText);
     }
 
-    public void register() throws Exception {
+    public void register() {
         buttonRegister().click();
     }
 
@@ -299,5 +279,16 @@ public class CreateAccountPage extends BasePage {
         Assert.assertTrue(messages.contains(errorMessages.get(6)));
         Assert.assertTrue(messages.contains(errorMessages.get(7)));
     }
+
+    public List<String> errorMessages = Arrays.asList(
+            "You must register at least one phone number.",
+            "lastname is required.",
+            "firstname is required.",
+            "passwd is required.",
+            "address1 is required.",
+            "city is required.",
+            "The Zip/Postal code you've entered is invalid. It must follow this format: 00000",
+            "This country requires you to choose a State."
+    );
 }
 
