@@ -16,8 +16,4 @@ public class StoreMainPage extends BasePage {
 	public String getPageTitle() {
 		return driver.findElement(pageTitle).getText();
 	}
-
-
-
-
 }

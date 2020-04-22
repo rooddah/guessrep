@@ -1,6 +1,7 @@
 package automationpractice;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import java.lang.String;
 
 public class BasePage {
     protected WebDriver driver;
