@@ -5,6 +5,7 @@ import orangeHRM.components.TopPanel;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.testng.Assert;
+import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
@@ -16,7 +17,9 @@ public class LoginTests extends BaseTest {
     protected static WebDriver driver;
 
     Login loginPage;
+
     TopPanel topPanel;
+
     Dashboard dashboard;
 
     @BeforeMethod
@@ -30,11 +33,16 @@ public class LoginTests extends BaseTest {
         driver.manage().window().maximize();
     }
 
+    @AfterMethod
+    public void teardown() throws Exception {
+        dashboard.topPanel().logout();
+        driver.close();
+    }
+
     @Test
-    public void tc01_login() throws Exception {
+    public void tc01_login() {
         loginPage.login(username, password);
         Assert.assertTrue(dashboard.topPanel().isTabSelected(DASHBOARD));
         Assert.assertTrue(dashboard.topPanel().welcomeAdmin().isDisplayed());
-        dashboard.topPanel().logout();
     }
 }

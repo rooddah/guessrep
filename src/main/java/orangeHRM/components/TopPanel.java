@@ -27,15 +27,14 @@ public class TopPanel {
 
     public void logout() throws Exception {
         clickOnWelcomeDropdown();
-        Thread.sleep(2000);
+        Thread.sleep(3000);
         WebElement logout = driver.findElement(LogoutLink);
         logout.click();
     }
 
     public void clickOnWelcomeDropdown() {
-        WebElement welcomeDropdown = driver.findElement(welcomeAdminLink);
-        if (welcomeDropdown != null) {
-            welcomeDropdown.click();
+        if (welcomeAdmin() != null) {
+            welcomeAdmin().click();
         }
     }
 
